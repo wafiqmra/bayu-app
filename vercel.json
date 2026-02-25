@@ -7,5 +7,10 @@
     },
     "routes": [
         { "src": "/(.*)", "dest": "/api/index.php" }
-    ]
+    ],
+    "env": {
+        "APP_DEBUG": "true",
+        "APP_ENV": "production",
+        "LOG_CHANNEL": "stderr"
+    }
 }
