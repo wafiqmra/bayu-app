@@ -4,10 +4,10 @@ use App\Http\Controllers\DebtController;
 use App\Models\Debt;
 use Illuminate\Support\Facades\Route;
 
-// Ambil data utang dan tampilkan di halaman depan
 Route::get('/', function () {
-    $debts = Debt::orderBy('created_at', 'desc')->get();
-    return view('welcome', compact('debts'));
+    // Ambil semua data, lalu kelompokkan berdasarkan nama_peminjam
+    $groupedDebts = Debt::orderBy('created_at', 'desc')->get()->groupBy('nama_peminjam');
+    return view('welcome', compact('groupedDebts'));
 });
 
 Route::post('/tambah-utang', [DebtController::class, 'store']);

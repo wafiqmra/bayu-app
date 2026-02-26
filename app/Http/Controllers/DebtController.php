@@ -21,7 +21,7 @@ class DebtController extends Controller
             'status' => 'belum_lunas',
         ]);
 
-        return redirect('/')->with('success', 'Data utang berhasil dicatat!');
+        return redirect('/')->with('success', 'Catatan utang berhasil ditambah!');
     }
 
     public function updateStatus($id)
@@ -38,6 +38,6 @@ class DebtController extends Controller
         $debt = Debt::findOrFail($id);
         $debt->delete();
 
-        return redirect('/')->with('success', 'Data utang berhasil dihapus!');
+        return redirect('/')->with('success', 'Catatan berhasil dihapus!');
     }
 }
