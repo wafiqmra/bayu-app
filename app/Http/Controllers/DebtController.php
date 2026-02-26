@@ -9,13 +9,11 @@ class DebtController extends Controller
 {
     public function store(Request $request)
     {
-        // 1. Validasi data (biar gak kosong)
         $request->validate([
             'nama_peminjam' => 'required',
             'jumlah_utang' => 'required|numeric',
         ]);
 
-        // 2. Simpan ke Database
         Debt::create([
             'nama_peminjam' => $request->nama_peminjam,
             'jumlah_utang' => $request->jumlah_utang,
@@ -23,7 +21,23 @@ class DebtController extends Controller
             'status' => 'belum_lunas',
         ]);
 
-        // 3. Balik ke halaman depan dengan pesan sukses
         return redirect('/')->with('success', 'Data utang berhasil dicatat!');
+    }
+
+    public function updateStatus($id)
+    {
+        $debt = Debt::findOrFail($id);
+        $debt->status = $debt->status == 'lunas' ? 'belum_lunas' : 'lunas';
+        $debt->save();
+
+        return redirect('/')->with('success', 'Status utang diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        $debt = Debt::findOrFail($id);
+        $debt->delete();
+
+        return redirect('/')->with('success', 'Data utang berhasil dihapus!');
     }
 }
