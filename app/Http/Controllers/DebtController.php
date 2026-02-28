@@ -13,6 +13,7 @@ class DebtController extends Controller
             'nama_peminjam' => 'required',
             'jumlah_utang' => 'required|numeric',
             'nomor_wa' => 'nullable|string',
+            'jatuh_tempo' => 'nullable|date',
         ]);
 
         Debt::create([
@@ -20,6 +21,7 @@ class DebtController extends Controller
             'jumlah_utang' => $request->jumlah_utang,
             'nomor_wa' => $request->nomor_wa,
             'keterangan' => $request->keterangan,
+            'jatuh_tempo' => $request->jatuh_tempo,
             'status' => 'belum_lunas',
             'user_id' => auth()->id(),
         ]);
