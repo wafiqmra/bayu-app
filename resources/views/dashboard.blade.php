@@ -133,10 +133,19 @@
                                             {{ $debt->keterangan ?: 'Tanpa Keterangan' }}
                                             @if($isOverdue) <span class="ml-2 text-[10px] bg-red-500 text-white px-2 py-0.5 rounded-full uppercase">Telat!</span> @endif
                                         </p>
+
                                         <p class="text-md font-black text-blue-600">Rp {{ number_format($debt->jumlah_utang, 0, ',', '.') }}</p>
-                                        @if($debt->jatuh_tempo)
-                                            <p class="text-[10px] {{ $isOverdue ? 'text-red-500' : 'text-slate-400' }} font-bold">Tempo: {{ \Carbon\Carbon::parse($debt->jatuh_tempo)->format('d M Y') }}</p>
-                                        @endif
+                                        
+                                        <div class="flex flex-wrap gap-x-4 mt-1">
+                                            <p class="text-[10px] text-slate-400 font-bold">
+                                                📅 {{ $debt->created_at->format('d M Y') }}
+                                            </p>
+                                            @if($debt->jatuh_tempo)
+                                                <p class="text-[10px] {{ $isOverdue ? 'text-red-500' : 'text-slate-400' }} font-bold italic">
+                                                    ⏳ Janji: {{ \Carbon\Carbon::parse($debt->jatuh_tempo)->format('d M Y') }}
+                                                </p>
+                                            @endif
+                                        </div>
                                     </div>
                                     
                                     <div class="flex gap-2">

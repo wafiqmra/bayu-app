@@ -2,179 +2,264 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>BAYU - Catat Piutang Warung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAYU - Bayar, Yuk! - Catat Piutang Warung</title>
+    
+    <!-- Favicon - logo di tab browser -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='90' font-size='90' text-anchor='middle' fill='%235C4E42'%3E💰%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='90' font-size='90' text-anchor='middle' fill='%235C4E42'%3E💰%3C/text%3E%3C/svg%3E">
+    
+    <!-- Font Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @keyfloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
-        }
-        .animate-float {
-            animation: float 4s ease-in-out infinite;
+        * {
+            font-family: 'Poppins', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
-        @keyframes soft-pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-        .animate-soft-pulse {
-            animation: soft-pulse 3s ease-in-out infinite;
-        }
-
-        * {
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        @media (max-width: 640px) {
-            a, button {
-                min-height: 44px;
-                min-width: 44px;
-            }
+        a, button {
+            transition: all 0.2s ease;
         }
     </style>
 </head>
-<body class="bg-gradient-to-b from-[#FFF9F0] via-[#FFF2E5] to-[#FFE5D9] min-h-screen relative overflow-x-hidden">
+<body class="bg-[#F5F0E9] min-h-screen">
     
-    <!-- Soft background decorations -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <!-- Very soft blur circles -->
-        <div class="absolute top-0 -right-20 w-[400px] h-[400px] bg-[#FFD9B0] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"></div>
-        <div class="absolute bottom-0 -left-20 w-[400px] h-[400px] bg-[#B5E5D4] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" style="animation-delay: 2s;"></div>
-        <div class="absolute top-1/2 left-1/3 w-[300px] h-[300px] bg-[#FFB5B0] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-float" style="animation-delay: 3s;"></div>
-        
-        <!-- Very subtle pattern -->
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23FFB5B0" fill-opacity="0.03"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/svg%3E')]"></div>
+    <!-- Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-[#E8E0D5] rounded-full opacity-20 blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-[#D9D0C2] rounded-full opacity-20 blur-3xl"></div>
     </div>
 
-    <!-- Main content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-12 relative z-10 min-h-screen flex items-center">
-        
-        <!-- Soft card container -->
-        <div class="w-full bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl shadow-[#FFB5B0]/20 p-6 sm:p-8 md:p-10 lg:p-12 border border-white/60">
-            
-            <!-- Logo section -->
-            <div class="text-center">
-                <div class="inline-block relative mb-2">
-                    <!-- Soft glow -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-[#FFB5B0] to-[#B5E5D4] blur-2xl opacity-20 rounded-full scale-150"></div>
-                    
-                    <!-- Logo with soft gradient -->
-                    <h1 class="relative text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black mb-2">
-                        <span class="bg-gradient-to-r from-[#FF8A7A] via-[#B5E5D4] to-[#FFB5B0] bg-clip-text text-transparent tracking-tighter drop-shadow-lg">
-                            💰BAYU
-                        </span>
-                    </h1>
-                    
-                    <!-- Simple decoration -->
-                    <div class="absolute -top-3 -right-3 text-2xl opacity-30">🫧</div>
-                    <div class="absolute -bottom-3 -left-3 text-2xl opacity-30">🫧</div>
-                </div>
+    <!-- ========== MOBILE VERSION (PORTRAIT) ========== -->
+    <div class="block md:hidden min-h-screen relative z-10">
+        <div class="min-h-screen flex items-center justify-center px-4 py-6">
+            <div class="w-full max-w-[400px] mx-auto">
+                
+                <!-- Card -->
+                <div class="bg-[#FDF9F5] rounded-3xl shadow-xl border border-[#E0D5C8] overflow-hidden">
+                    <div class="p-8">
+                        
+                        <!-- Logo section -->
+                        <div class="text-center">
+                            <div class="inline-flex items-center justify-center mb-3">
+                                <span class="text-7xl drop-shadow-lg">💰</span>
+                            </div>
+                            
+                            <h1 class="text-6xl font-bold text-[#5C4E42] tracking-tight leading-none">
+                                BAYU
+                            </h1>
+                            
+                            <!-- Tagline Bayar, Yuk! -->
+                            <div class="bg-[#E8DED3] inline-block px-4 py-1 rounded-full mt-2">
+                                <span class="text-sm font-medium text-[#4A3E34]">Bayar, Yuk!</span>
+                            </div>
+                            
+                            <div class="flex justify-center my-4">
+                                <div class="w-16 h-1 bg-[#CBB9A8] rounded-full"></div>
+                            </div>
+                            
+                            <p class="text-[#5C4E42] text-lg max-w-xs mx-auto font-medium">
+                                catat piutang warung,<br>santai aja.
+                            </p>
+                            
+                            <p class="text-[#8B7E6F] text-xs mt-2">
+                                gak bakal lupa nagih • gratis
+                            </p>
+                        </div>
 
-                <!-- Friendly tagline -->
-                <div class="mt-4 space-y-2">
-                    <p class="text-[#7F8B8A] text-lg sm:text-xl md:text-2xl font-medium leading-relaxed max-w-lg mx-auto">
-                        Catat piutang warungmu, 
-                        <span class="text-[#FF8A7A] font-semibold">tenang</span> 
-                        <span class="text-[#B5E5D4] font-semibold">hati</span>.
-                    </p>
-                    
-                    <!-- Soft indicator -->
-                    <div class="flex justify-center items-center gap-2 text-sm text-[#7F8B8A]/60">
-                        <span class="w-1.5 h-1.5 bg-[#FFB5B0] rounded-full"></span>
-                        <span>gampang & santai aja</span>
-                        <span class="w-1.5 h-1.5 bg-[#B5E5D4] rounded-full"></span>
+                        <!-- Buttons -->
+                        <div class="mt-8 space-y-3">
+                            @auth
+                                <a href="{{ url('/dashboard') }}" 
+                                   class="block w-full bg-[#5C4E42] hover:bg-[#4A3E34] text-white text-center px-6 py-4 rounded-xl font-semibold text-base shadow-lg">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span>📋</span>
+                                        <span>Buka Dashboard</span>
+                                        <span>→</span>
+                                    </span>
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}" 
+                                   class="block w-full bg-[#5C4E42] hover:bg-[#4A3E34] text-white text-center px-6 py-4 rounded-xl font-semibold text-base shadow-lg">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span>🔐</span>
+                                        <span>Masuk / Login</span>
+                                    </span>
+                                </a>
+                                
+                                <a href="{{ route('register') }}" 
+                                   class="block w-full bg-[#E8DED3] hover:bg-[#D9CBBE] text-[#4A3E34] text-center px-6 py-4 rounded-xl font-semibold text-base border-2 border-[#CBB9A8]">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span>✨</span>
+                                        <span>Daftar Akun Baru</span>
+                                    </span>
+                                </a>
+                            @endauth
+                        </div>
+
+                        <!-- Features -->
+                        <div class="mt-8 grid grid-cols-2 gap-3">
+                            <div class="bg-[#F5F0E9] rounded-xl py-4 text-center border border-[#D9CBBE]">
+                                <div class="text-3xl text-[#5C4E42] mb-1">📝</div>
+                                <div class="font-semibold text-[#5C4E42] text-sm">Catat</div>
+                                <div class="text-xs text-[#8B7E6F]">utang</div>
+                            </div>
+                            
+                            <div class="bg-[#F5F0E9] rounded-xl py-4 text-center border border-[#D9CBBE]">
+                                <div class="text-3xl text-[#5C4E42] mb-1">⏰</div>
+                                <div class="font-semibold text-[#5C4E42] text-sm">Ingetin</div>
+                                <div class="text-xs text-[#8B7E6F]">nagih</div>
+                            </div>
+                            
+                            <div class="bg-[#F5F0E9] rounded-xl py-4 text-center border border-[#D9CBBE] col-span-2">
+                                <div class="text-3xl text-[#5C4E42] mb-1">🔒</div>
+                                <div class="font-semibold text-[#5C4E42] text-sm">Aman</div>
+                                <div class="text-xs text-[#8B7E6F]">data terjaga</div>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="mt-6 text-center">
+                            <p class="text-xs text-[#8B7E6F]">khusus pemilik warung & umkm</p>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Soft divider -->
-                <div class="mt-8 flex justify-center">
-                    <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#FFB5B0] to-transparent rounded-full"></div>
-                </div>
-            </div>
-
-            <!-- CTA Buttons - soft and friendly -->
-            <div class="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-                @auth
-                    <a href="{{ url('/dashboard') }}" 
-                       class="bg-[#FFB5B0] hover:bg-[#FF8A7A] text-white px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg shadow-lg shadow-[#FFB5B0]/30 hover:shadow-xl hover:shadow-[#FF8A7A]/40 transition-all duration-300 active:scale-95 w-full sm:w-auto text-center">
-                        <span class="flex items-center justify-center gap-2">
-                            <span>📋</span>
-                            Buka Dashboard
-                            <span class="text-lg">→</span>
-                        </span>
-                    </a>
-                @else
-                    <a href="{{ route('login') }}" 
-                       class="bg-[#B5E5D4] hover:bg-[#9AD4C0] text-[#5C6D6B] px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg shadow-lg shadow-[#B5E5D4]/30 hover:shadow-xl hover:shadow-[#9AD4C0]/40 transition-all duration-300 active:scale-95 w-full sm:w-auto text-center">
-                        <span class="flex items-center justify-center gap-2">
-                            <span>🔐</span>
-                            Masuk / Login
-                        </span>
-                    </a>
-
-                    <a href="{{ route('register') }}" 
-                       class="bg-white/80 backdrop-blur-sm border-2 border-[#FFE5D9] text-[#7F8B8A] px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-semibold text-base sm:text-lg hover:bg-white hover:border-[#B5E5D4] hover:text-[#5C6D6B] shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 w-full sm:w-auto text-center">
-                        <span class="flex items-center justify-center gap-2">
-                            <span>✨</span>
-                            Daftar
-                        </span>
-                    </a>
-                @endauth
-            </div>
-
-            <!-- Simple features - soft and clear -->
-            <div class="mt-10 sm:mt-12 grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
-                <div class="bg-white/60 backdrop-blur-sm rounded-xl py-3 px-2 text-center">
-                    <div class="text-2xl mb-1">📝</div>
-                    <div class="text-xs sm:text-sm text-[#7F8B8A]">Catat utang</div>
-                </div>
-                <div class="bg-white/60 backdrop-blur-sm rounded-xl py-3 px-2 text-center">
-                    <div class="text-2xl mb-1">⏰</div>
-                    <div class="text-xs sm:text-sm text-[#7F8B8A]">Ingetin nagih</div>
-                </div>
-                <div class="bg-white/60 backdrop-blur-sm rounded-xl py-3 px-2 text-center col-span-2 sm:col-span-1">
-                    <div class="text-2xl mb-1">🔒</div>
-                    <div class="text-xs sm:text-sm text-[#7F8B8A]">Aman</div>
-                </div>
-            </div>
-
-            <!-- Friendly footer note -->
-            <div class="mt-8 sm:mt-10 text-center">
-                <p class="text-sm text-[#7F8B8A]/50">
-                    <span class="inline-flex items-center gap-2">
-                        <span>🌿</span>
-                        buat pemilik warung yang santai tapi teliti
-                        <span>🌿</span>
-                    </span>
-                </p>
             </div>
         </div>
     </div>
 
-    <!-- Very soft version badge -->
-    <div class="fixed bottom-3 right-3 text-xs text-[#7F8B8A]/30 z-20">
-        <span class="bg-white/40 backdrop-blur-sm px-3 py-1 rounded-full">versi warung • soft</span>
+    <!-- ========== DESKTOP VERSION (LANDSCAPE) ========== -->
+    <div class="hidden md:block min-h-screen relative z-10">
+        <div class="min-h-screen flex items-center justify-center px-8 py-8">
+            <div class="w-full max-w-5xl mx-auto">
+                
+                <!-- Card landscape -->
+                <div class="bg-[#FDF9F5] rounded-3xl shadow-xl border border-[#E0D5C8] overflow-hidden">
+                    <div class="flex flex-row">
+                        
+                        <!-- LEFT SIDE -->
+                        <div class="w-2/5 p-12 flex flex-col justify-center bg-[#F5F0E9]/30">
+                            <div class="text-center md:text-left">
+                                <span class="text-8xl drop-shadow-lg block mb-4">💰</span>
+                                
+                                <h1 class="text-7xl font-bold text-[#5C4E42] tracking-tight leading-none mb-2">
+                                    BAYU
+                                </h1>
+                                
+                                <!-- Tagline Bayar, Yuk! -->
+                                <div class="bg-[#E8DED3] inline-block px-5 py-2 rounded-full mb-4">
+                                    <span class="text-lg font-medium text-[#4A3E34]">Bayar, Yuk!</span>
+                                </div>
+                                
+                                <div class="w-20 h-1 bg-[#CBB9A8] rounded-full mb-5"></div>
+                                
+                                <p class="text-[#5C4E42] text-2xl font-medium mb-2">
+                                    catat piutang warung,<br>santai aja.
+                                </p>
+                                
+                                <p class="text-[#8B7E6F] text-base">
+                                    gak bakal lupa nagih • gratis selamanya
+                                </p>
+                                
+                                <!-- Testimonial -->
+                                <div class="mt-8 bg-white/50 rounded-xl p-4 border border-[#D9CBBE]">
+                                    <p class="text-[#5C4E42] text-sm italic">
+                                        "Buat warung kecil kayak aku, BAYU ngebantu banget."
+                                    </p>
+                                    <p class="text-[#8B7E6F] text-xs mt-1 font-medium">
+                                        — Bu Sari, Warung Sari
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- RIGHT SIDE -->
+                        <div class="w-3/5 p-12">
+                            <!-- Buttons -->
+                            <div class="mb-10">
+                                @auth
+                                    <a href="{{ url('/dashboard') }}" 
+                                       class="inline-block w-full bg-[#5C4E42] hover:bg-[#4A3E34] text-white text-center px-8 py-5 rounded-xl font-bold text-lg shadow-xl">
+                                        <span class="flex items-center justify-center gap-3">
+                                            <span class="text-2xl">📋</span>
+                                            <span>Buka Dashboard</span>
+                                            <span class="text-2xl">→</span>
+                                        </span>
+                                    </a>
+                                @else
+                                    <div class="flex flex-row gap-4">
+                                        <a href="{{ route('login') }}" 
+                                           class="flex-1 bg-[#5C4E42] hover:bg-[#4A3E34] text-white text-center px-6 py-5 rounded-xl font-bold text-lg shadow-xl">
+                                            <span class="flex items-center justify-center gap-2">
+                                                <span class="text-2xl">🔐</span>
+                                                <span>Login</span>
+                                            </span>
+                                        </a>
+                                        
+                                        <a href="{{ route('register') }}" 
+                                           class="flex-1 bg-[#E8DED3] hover:bg-[#D9CBBE] text-[#4A3E34] text-center px-6 py-5 rounded-xl font-bold text-lg border-2 border-[#CBB9A8]">
+                                            <span class="flex items-center justify-center gap-2">
+                                                <span class="text-2xl">✨</span>
+                                                <span>Daftar</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                @endauth
+                            </div>
+
+                            <!-- Features -->
+                            <div class="grid grid-cols-3 gap-4 mb-8">
+                                <div class="bg-[#F5F0E9] rounded-xl py-5 text-center border border-[#D9CBBE] hover:shadow-md">
+                                    <div class="text-4xl text-[#5C4E42] mb-2">📝</div>
+                                    <div class="font-semibold text-[#5C4E42] text-base">Catat</div>
+                                    <div class="text-sm text-[#8B7E6F]">utang piutang</div>
+                                </div>
+                                
+                                <div class="bg-[#F5F0E9] rounded-xl py-5 text-center border border-[#D9CBBE] hover:shadow-md">
+                                    <div class="text-4xl text-[#5C4E42] mb-2">⏰</div>
+                                    <div class="font-semibold text-[#5C4E42] text-base">Ingetin</div>
+                                    <div class="text-sm text-[#8B7E6F]">waktu nagih</div>
+                                </div>
+                                
+                                <div class="bg-[#F5F0E9] rounded-xl py-5 text-center border border-[#D9CBBE] hover:shadow-md">
+                                    <div class="text-4xl text-[#5C4E42] mb-2">🔒</div>
+                                    <div class="font-semibold text-[#5C4E42] text-base">Aman</div>
+                                    <div class="text-sm text-[#8B7E6F]">data terjaga</div>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="flex items-center justify-between text-sm text-[#8B7E6F] pt-4 border-t border-[#E0D5C8]">
+                                <span>🌿 gratis</span>
+                                <span>•</span>
+                                <span>🌿 gampang</span>
+                                <span>•</span>
+                                <span>🌿 ga ribet</span>
+                            </div>
+                            
+                            <div class="text-right text-xs text-[#8B7E6F] mt-3">
+                                khusus pemilik warung & umkm
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Version badge -->
+                <div class="mt-4 text-right">
+                    <span class="inline-block text-xs text-[#8B7E6F] bg-[#FDF9F5] px-4 py-2 rounded-full border border-[#D9CBBE] font-medium">
+                        ⚡ BAYU = Bayar, Yuk!
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Additional softness for very small screens -->
-    <style>
-        @media (max-width: 380px) {
-            .text-6xl {
-                font-size: 3.5rem;
-            }
-        }
-        
-        /* Smooth transitions */
-        a, button {
-            transition: all 0.2s ease;
-        }
-        
-        /* Soft focus state */
-        a:focus, button:focus {
-            outline: 2px solid #FFB5B0;
-            outline-offset: 2px;
-        }
-    </style>
+    <!-- Blade directives -->
+    <!-- @auth @else @endauth {{ url('/dashboard') }} {{ route('login') }} {{ route('register') }} -->
 </body>
 </html>
