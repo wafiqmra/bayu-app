@@ -17,11 +17,19 @@
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 mb-8">
                 <form action="/tambah-utang" method="POST" class="space-y-4">
                     @csrf
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Nama Peminjam</label>
-                        <input type="text" name="nama_peminjam" required
-                            class="w-full border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50" 
-                            placeholder="Siapa yang ngutang?">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Nama Peminjam</label>
+                            <input type="text" name="nama_peminjam" required
+                                class="w-full border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50" 
+                                placeholder="Siapa yang ngutang?">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Nomor WhatsApp</label>
+                            <input type="tel" name="nomor_wa"
+                                class="w-full border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50" 
+                                placeholder="08xxxxxxxxxx">
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -50,6 +58,16 @@
                 <h2 class="text-lg font-black text-slate-800 ml-2 mb-4">👥 DAFTAR PEMINJAM</h2>
                 
                 @forelse($groupedDebts as $nama => $items)
+                    @php
+                        // Ambil nomor WA dari salah satu data (karena nama yang sama diasumsikan nomor sama)
+                        $nomorTujuan = $items->first()->nomor_wa;
+                        // Bersihkan nomor WA (ubah 08 jadi 628)
+                        $waFormatted = $nomorTujuan;
+                        if (str_starts_with($waFormatted, '0')) {
+                            $waFormatted = '62' . substr($waFormatted, 1);
+                        }
+                    @endphp
+
                     <details class="group bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all">
                         <summary class="flex justify-between items-center p-5 cursor-pointer list-none select-none">
                             <div class="flex items-center gap-4">
@@ -69,20 +87,34 @@
 
                         <div class="p-4 bg-slate-50 border-t border-slate-100 space-y-3">
                             @foreach($items as $debt)
+                                @php
+                                    // Bikin pesan WA otomatis
+                                    $pesan = "Halo {$nama}, mau ngingetin catatan piutang di BAYU sebesar Rp " . number_format($debt->jumlah_utang, 0, ',', '.') . " untuk '{$debt->keterangan}'. Mohon dicek ya, nuhun! 🙏";
+                                    $linkWA = "https://wa.me/{$waFormatted}?text=" . urlencode($pesan);
+                                @endphp
+
                                 <div class="bg-white p-4 rounded-xl border border-slate-100 flex justify-between items-center shadow-sm">
-                                    <div>
+                                    <div class="flex-1">
                                         <p class="text-sm font-bold {{ $debt->status == 'lunas' ? 'line-through text-slate-300' : 'text-slate-700' }}">
                                             {{ $debt->keterangan ?: 'Tanpa Keterangan' }}
                                         </p>
                                         <p class="text-md font-black text-blue-600">Rp {{ number_format($debt->jumlah_utang, 0, ',', '.') }}</p>
                                     </div>
+                                    
                                     <div class="flex gap-2">
+                                        @if($debt->nomor_wa && $debt->status != 'lunas')
+                                            <a href="{{ $linkWA }}" target="_blank" class="p-2 rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors" title="Tagih lewat WA">
+                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.52.909 3.012 1.388 4.73 1.389 5.234 0 9.493-4.259 9.495-9.493.002-5.233-4.257-9.493-9.493-9.493-2.535 0-4.918.988-6.71 2.781-1.791 1.792-2.776 4.176-2.778 6.709-.001 1.839.52 3.255 1.411 4.743l-.944 3.447 3.535-.927zm10.957-5.231c-.3-.15-1.775-.875-2.05-.975-.275-.1-.475-.15-.675.15-.2.3-.775 1.05-.95 1.25-.175.2-.35.225-.65.075-.3-.15-1.266-.467-2.411-1.487-.891-.795-1.492-1.777-1.667-2.076-.175-.3-.019-.463.13-.612.135-.133.3-.35.45-.525.15-.175.2-.3.3-.5s.05-.375-.025-.525c-.075-.15-.675-1.625-.925-2.225-.244-.589-.491-.51-.675-.519-.175-.009-.375-.01-.575-.01s-.525.075-.8.375c-.275.3-1.05 1.025-1.05 2.5s1.075 2.9 1.225 3.1c.15.2 2.116 3.23 5.125 4.532.715.311 1.275.496 1.708.635.717.227 1.369.195 1.885.118.575-.085 1.775-.725 2.025-1.425.25-.7.25-1.3 0-1.425-.075-.125-.275-.2-.575-.35z"/></svg>
+                                            </a>
+                                        @endif
+
                                         <form action="/update-status/{{ $debt->id }}" method="POST">
                                             @csrf
                                             <button class="p-2 rounded-lg border {{ $debt->status == 'lunas' ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600' }}">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                                             </button>
                                         </form>
+                                        
                                         <form action="/hapus-utang/{{ $debt->id }}" method="POST">
                                             @csrf @method('DELETE')
                                             <button class="p-2 rounded-lg border border-red-100 text-red-400">
