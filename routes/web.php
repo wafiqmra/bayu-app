@@ -2,29 +2,25 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DebtController;
-use App\Models\Debt;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
+use Illuminate\Support\Facades\Route;
 
 // 1. Halaman Landing (Welcome)
+// Kita kasih logika: kalau sudah login, pas buka '/' langsung dilempar ke dashboard
 Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
     return view('welcome');
 });
 
-// 2. Dashboard - Hanya bisa diakses kalau sudah login
-Route::get('/dashboard', function () {
-    // Kita ambil data utang hanya milik user yang sedang login
-    $groupedDebts = Debt::where('user_id', auth()->id())
-        ->orderBy('created_at', 'desc')
-        ->get()
-        ->groupBy('nama_peminjam');
+// 2. Dashboard & Fitur Utama (Dibungkus Middleware Auth)
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    // Dashboard - Sekarang memanggil fungsi index di DebtController (Biar $contacts kebaca!)
+    Route::get('/dashboard', [DebtController::class, 'index'])->name('dashboard');
 
-    return view('dashboard', compact('groupedDebts'));
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// 3. Fitur Utama BAYU (Dibungkus Middleware Auth agar aman)
-Route::middleware('auth')->group(function () {
-    // Fitur Utang
+    // Fitur Kelola Utang
     Route::post('/tambah-utang', [DebtController::class, 'store']);
     Route::post('/update-status/{id}', [DebtController::class, 'updateStatus']);
     Route::delete('/hapus-utang/{id}', [DebtController::class, 'destroy']);
@@ -35,7 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// 4. Autentikasi Google (Socialite)
+// 3. Autentikasi Google (Socialite)
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
