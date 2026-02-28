@@ -22,6 +22,7 @@
                     updateWA() {
                         // Cari apakah nama yang diketik cocok dengan data lama
                         let match = this.contacts.find(c => c.nama_peminjam.toLowerCase() === this.nama.toLowerCase());
+                        let match = this.contacts.find(c => c.nama_peminjam.toLowerCase() === search);
                         if (match) {
                             this.wa = match.nomor_wa;
                         }
@@ -35,6 +36,7 @@
                             <input type="text" name="nama_peminjam" required 
                                 x-model="nama" 
                                 @input="updateWA()"
+                                @change="updateWA()"
                                 list="peminjam_list"
                                 class="w-full border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50" 
                                 placeholder="Siapa yang ngutang?">
