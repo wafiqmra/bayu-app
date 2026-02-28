@@ -14,19 +14,41 @@
                 </div>
             @endif
 
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 mb-8">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 mb-8"
+                 x-data="{ 
+                    nama: '', 
+                    wa: '', 
+                    contacts: {{ $contacts->toJson() }},
+                    updateWA() {
+                        // Cari apakah nama yang diketik cocok dengan data lama
+                        let match = this.contacts.find(c => c.nama_peminjam.toLowerCase() === this.nama.toLowerCase());
+                        if (match) {
+                            this.wa = match.nomor_wa;
+                        }
+                    }
+                 }">
                 <form action="/tambah-utang" method="POST" class="space-y-4">
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Nama Peminjam</label>
-                            <input type="text" name="nama_peminjam" required
+                            <input type="text" name="nama_peminjam" required 
+                                x-model="nama" 
+                                @input="updateWA()"
+                                list="peminjam_list"
                                 class="w-full border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50" 
                                 placeholder="Siapa yang ngutang?">
+                            
+                            <datalist id="peminjam_list">
+                                @foreach($contacts as $contact)
+                                    <option value="{{ $contact->nama_peminjam }}">
+                                @endforeach
+                            </datalist>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Nomor WhatsApp</label>
-                            <input type="tel" name="nomor_wa"
+                            <input type="tel" name="nomor_wa" 
+                                x-model="wa"
                                 class="w-full border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50" 
                                 placeholder="08xxxxxxxxxx">
                         </div>
@@ -59,11 +81,9 @@
                 
                 @forelse($groupedDebts as $nama => $items)
                     @php
-                        // Ambil nomor WA dari salah satu data (karena nama yang sama diasumsikan nomor sama)
                         $nomorTujuan = $items->first()->nomor_wa;
-                        // Bersihkan nomor WA (ubah 08 jadi 628)
                         $waFormatted = $nomorTujuan;
-                        if (str_starts_with($waFormatted, '0')) {
+                        if ($waFormatted && str_starts_with($waFormatted, '0')) {
                             $waFormatted = '62' . substr($waFormatted, 1);
                         }
                     @endphp
@@ -88,7 +108,6 @@
                         <div class="p-4 bg-slate-50 border-t border-slate-100 space-y-3">
                             @foreach($items as $debt)
                                 @php
-                                    // Bikin pesan WA otomatis
                                     $pesan = "Halo {$nama}, mau ngingetin catatan piutang di BAYU sebesar Rp " . number_format($debt->jumlah_utang, 0, ',', '.') . " untuk '{$debt->keterangan}'. Mohon dicek ya, nuhun! 🙏";
                                     $linkWA = "https://wa.me/{$waFormatted}?text=" . urlencode($pesan);
                                 @endphp

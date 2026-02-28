@@ -24,7 +24,7 @@ class DebtController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        return redirect('/')->with('success', 'Catatan utang berhasil ditambah!');
+        return redirect('/dashboard')->with('success', 'Catatan utang berhasil ditambah!');
     }
 
     public function updateStatus($id)
@@ -42,5 +42,25 @@ class DebtController extends Controller
         $debt->delete();
 
         return redirect('/')->with('success', 'Catatan berhasil dihapus!');
+    }
+
+    public function index()
+    {
+        $user = auth()->user();
+        
+        // Ambil semua utang user
+        $debts = $user->debts()->latest()->get();
+        
+        // Ambil daftar peminjam unik untuk fitur Auto-fill (Fitur No. 2)
+        $contacts = $user->debts()
+            ->whereNotNull('nomor_wa')
+            ->select('nama_peminjam', 'nomor_wa')
+            ->distinct('nama_peminjam')
+            ->get();
+
+        return view('dashboard', [
+            'groupedDebts' => $debts->groupBy('nama_peminjam'),
+            'contacts' => $contacts // Kirim data kontak ke view
+        ]);
     }
 }
