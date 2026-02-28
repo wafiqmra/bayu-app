@@ -33,7 +33,8 @@ class DebtController extends Controller
         $debt->status = $debt->status == 'lunas' ? 'belum_lunas' : 'lunas';
         $debt->save();
 
-        return redirect('/')->with('success', 'Status utang diperbarui!');
+        // Ganti '/' jadi back() atau '/dashboard' biar gak nyasar ke welcome
+        return back()->with('success', 'Status utang diperbarui!');
     }
 
     public function destroy($id)
@@ -41,26 +42,27 @@ class DebtController extends Controller
         $debt = Debt::findOrFail($id);
         $debt->delete();
 
-        return redirect('/')->with('success', 'Catatan berhasil dihapus!');
+        // Ganti '/' jadi back() atau '/dashboard'
+        return back()->with('success', 'Catatan berhasil dihapus!');
     }
 
     public function index()
     {
         $user = auth()->user();
         
-        // Ambil semua utang user
         $debts = $user->debts()->latest()->get();
         
-        // Ambil daftar peminjam unik untuk fitur Auto-fill (Fitur No. 2)
+        // Ambil daftar peminjam unik untuk fitur Auto-fill
         $contacts = $user->debts()
             ->whereNotNull('nomor_wa')
             ->select('nama_peminjam', 'nomor_wa')
-            ->distinct('nama_peminjam')
-            ->get();
+            ->get()
+            ->unique('nama_peminjam')
+            ->values(); // Reset index array agar Alpine.js bacanya gampang
 
         return view('dashboard', [
             'groupedDebts' => $debts->groupBy('nama_peminjam'),
-            'contacts' => $contacts // Kirim data kontak ke view
+            'contacts' => $contacts
         ]);
     }
 }
