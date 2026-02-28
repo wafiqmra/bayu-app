@@ -19,6 +19,7 @@ class DebtController extends Controller
             'jumlah_utang' => $request->jumlah_utang,
             'keterangan' => $request->keterangan,
             'status' => 'belum_lunas',
+            'user_id' => auth()->id(),
         ]);
 
         return redirect('/')->with('success', 'Catatan utang berhasil ditambah!');
