@@ -14,6 +14,23 @@
                 </div>
             @endif
 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-blue-600 to-blue-700 p-5 rounded-3xl shadow-lg shadow-blue-200 text-white">
+                    <p class="text-xs font-bold uppercase opacity-80 mb-1">Total Piutang</p>
+                    <h3 class="text-2xl font-black">Rp {{ number_format($stats['total_piutang'], 0, ',', '.') }}</h3>
+                </div>
+
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+                    <p class="text-xs font-bold text-slate-400 uppercase mb-1">Sudah Kembali</p>
+                    <h3 class="text-2xl font-black text-emerald-500">Rp {{ number_format($stats['total_kembali'], 0, ',', '.') }}</h3>
+                </div>
+
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+                    <p class="text-xs font-bold text-slate-400 uppercase mb-1">Peminjam Aktif</p>
+                    <h3 class="text-2xl font-black text-slate-800">{{ $stats['peminjam_aktif'] }} Orang</h3>
+                </div>
+            </div>
+
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 mb-8"
                  x-data="{ 
                     nama: '', 

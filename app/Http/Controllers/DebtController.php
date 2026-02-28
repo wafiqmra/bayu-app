@@ -52,7 +52,11 @@ class DebtController extends Controller
         
         $debts = $user->debts()->latest()->get();
         
-        // Ambil daftar peminjam unik untuk fitur Auto-fill
+        $stats = [
+            'total_piutang' => $user->debts()->where('status', 'belum_lunas')->sum('jumlah_utang'),
+            'total_kembali' => $user->debts()->where('status', 'lunas')->sum('jumlah_utang'),
+            'peminjam_aktif' => $user->debts()->where('status', 'belum_lunas')->distinct('nama_peminjam')->count('nama_peminjam'),
+        ];
         $contacts = $user->debts()
             ->whereNotNull('nomor_wa')
             ->select('nama_peminjam', 'nomor_wa')
@@ -62,7 +66,8 @@ class DebtController extends Controller
 
         return view('dashboard', [
             'groupedDebts' => $debts->groupBy('nama_peminjam'),
-            'contacts' => $contacts
+            'contacts' => $contacts,
+            'stats' => $stats
         ]);
     }
 }
