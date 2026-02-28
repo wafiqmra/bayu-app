@@ -45,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relasi ke model Debt (Satu user punya banyak catatan utang)
+     */
+    public function debts()
+    {
+        return $this->hasMany(Debt::class);
+    }
 }
