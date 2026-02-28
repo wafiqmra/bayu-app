@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL; // Baris ini jangan sampai ketinggalan!
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,8 +20,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        /**
+         * Memaksa Laravel menggunakan skema HTTPS saat berjalan di Vercel.
+         * Ini akan menghilangkan peringatan "Not Secure" dan error 419 Page Expired
+         * karena form akan dikirimkan melalui jalur yang aman.
+         */
         if (config('app.env') === 'production') {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
+            URL::forceScheme('https');
         }
     }
 }
