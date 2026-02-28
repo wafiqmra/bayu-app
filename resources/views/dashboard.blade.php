@@ -19,13 +19,18 @@
                     nama: '', 
                     wa: '', 
                     contacts: {{ $contacts->toJson() }},
-                    updateWA() {
-                        // Cari apakah nama yang diketik cocok dengan data lama
-                        let match = this.contacts.find(c => c.nama_peminjam.toLowerCase() === this.nama.toLowerCase());
-                        let match = this.contacts.find(c => c.nama_peminjam.toLowerCase() === search);
-                        if (match) {
-                            this.wa = match.nomor_wa;
-                        }
+                    init() {
+                        // Watcher: Ngintip variabel 'nama' secara live
+                        this.$watch('nama', (value) => {
+                            if (value.length > 0) {
+                                let match = this.contacts.find(c => 
+                                    c.nama_peminjam.toLowerCase() === value.trim().toLowerCase()
+                                );
+                                if (match) {
+                                    this.wa = match.nomor_wa;
+                                }
+                            }
+                        });
                     }
                  }">
                 <form action="/tambah-utang" method="POST" class="space-y-4">
@@ -35,9 +40,8 @@
                             <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Nama Peminjam</label>
                             <input type="text" name="nama_peminjam" required 
                                 x-model="nama" 
-                                @input="updateWA()"
-                                @change="updateWA()"
                                 list="peminjam_list"
+                                autocomplete="off"
                                 class="w-full border border-slate-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50" 
                                 placeholder="Siapa yang ngutang?">
                             
