@@ -1,10 +1,20 @@
 {
     "version": 2,
+    "framework": "laravel",
     "functions": {
-        "api/*.php": { "runtime": "vercel-php@0.7.2" }
+        "api/*.php": {
+            "runtime": "vercel-php@0.7.2"
+        }
     },
     "routes": [
-        { "src": "/(.*)", "dest": "/api/index.php" }
+        {
+            "src": "/(css|js|images|favicon.ico|whatsapp.png|.*\\.png|.*\\.jpg|.*\\.svg)",
+            "dest": "/public/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/api/index.php"
+        }
     ],
     "env": {
         "APP_CONFIG_CACHE": "/tmp/config.php",
