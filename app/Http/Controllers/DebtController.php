@@ -11,24 +11,40 @@ class DebtController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $allDebts = $user->debts()->latest('updated_at')->get();
         
-        // Pisahkan data untuk Tab
-        $activeDebts = $allDebts->where('status', 'belum_lunas')->groupBy('nama_peminjam');
-        $historyDebts = $allDebts->where('status', 'lunas')->groupBy('nama_peminjam');
+        // 1. Ambil Nama Peminjam Aktif dengan Pagination (5 orang per halaman)
+        $activeNames = $user->debts()
+            ->where('status', 'belum_lunas')
+            ->select('nama_peminjam')
+            ->groupBy('nama_peminjam')
+            ->paginate(5); // Angka ini bisa kamu ubah sesuai selera
 
-        // Statistik
+        // 2. Ambil Detail Utang hanya untuk nama yang ada di halaman ini
+        $activeDebts = $user->debts()
+            ->where('status', 'belum_lunas')
+            ->whereIn('nama_peminjam', $activeNames->pluck('nama_peminjam'))
+            ->get()
+            ->groupBy('nama_peminjam');
+
+        // 3. Riwayat Lunas (Tetap ambil semua atau bisa dipaginasi juga nanti)
+        $historyDebts = $user->debts()
+            ->where('status', 'lunas')
+            ->latest('updated_at')
+            ->get()
+            ->groupBy('nama_peminjam');
+
+        // 4. Statistik (Tetap hitung dari seluruh data user)
+        $allStatsDebts = $user->debts()->get();
         $stats = [
-            'total_piutang'  => $allDebts->where('status', 'belum_lunas')->sum('jumlah_utang'),
-            'total_kembali'  => $allDebts->where('status', 'lunas')->sum('jumlah_utang'),
-            'peminjam_aktif' => $activeDebts->count(),
-            // Gebrakan PKM: Cek berapa duit yang masuk khusus hari ini
-            'masuk_hari_ini' => $allDebts->where('status', 'lunas')
-                                         ->where('updated_at', '>=', Carbon::today())
-                                         ->sum('jumlah_utang'),
+            'total_piutang'  => $allStatsDebts->where('status', 'belum_lunas')->sum('jumlah_utang'),
+            'total_kembali'  => $allStatsDebts->where('status', 'lunas')->sum('jumlah_utang'),
+            'peminjam_aktif' => $user->debts()->where('status', 'belum_lunas')->distinct('nama_peminjam')->count(),
+            'masuk_hari_ini' => $allStatsDebts->where('status', 'lunas')
+                                             ->where('updated_at', '>=', Carbon::today())
+                                             ->sum('jumlah_utang'),
         ];
 
-        $contacts = $allDebts->whereNotNull('nomor_wa')
+        $contacts = $allStatsDebts->whereNotNull('nomor_wa')
             ->unique('nama_peminjam')
             ->map(function ($item) {
                 return [
@@ -39,6 +55,7 @@ class DebtController extends Controller
 
         return view('dashboard', [
             'activeDebts'  => $activeDebts,
+            'activeNames'  => $activeNames, // Variabel penting untuk tombol halaman
             'historyDebts' => $historyDebts,
             'contacts'     => $contacts,
             'stats'        => $stats
