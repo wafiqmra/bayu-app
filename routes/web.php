@@ -24,7 +24,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tambah-utang', [DebtController::class, 'store']);
     Route::post('/update-status/{id}', [DebtController::class, 'updateStatus']);
     Route::delete('/hapus-utang/{id}', [DebtController::class, 'destroy']);
-    Route::get('/bayar/{id}', [DebtController::class, 'showInvoice'])->name('debt.invoice');
 
     // Fitur Profile (Bawaan Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,5 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // 3. Autentikasi Google (Socialite)
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+Route::get('/invoice/{id}', [DebtController::class, 'showInvoice'])->name('debt.invoice');
 
 require __DIR__.'/auth.php';
