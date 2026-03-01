@@ -4,7 +4,7 @@
             <div class="w-full px-4 sm:px-6 lg:px-8 py-4">
                 <h2 class="font-bold text-xl text-[#1E3A5F] leading-tight flex items-center gap-2">
                     <span class="text-2xl">💰</span> 
-                    Kelola Piutang
+                    Kelola Piutangs
                     <span class="text-xs bg-[#F0F5FA] text-[#5F7D9C] px-3 py-1 rounded-full ml-2">BAYU</span>
                 </h2>
             </div>
