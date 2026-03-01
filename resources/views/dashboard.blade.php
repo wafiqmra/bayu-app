@@ -1,19 +1,11 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="bg-white/95 backdrop-blur-sm border-b border-[#D4E0E8]">
-            <div class="w-full px-4 sm:px-6 lg:px-8 py-4">
-                <h2 class="font-bold text-xl text-[#1E3A5F] leading-tight flex items-center gap-2">
-                    <span class="text-2xl">💰</span> 
-                    Kelola Piutang
-                    <span class="text-xs bg-[#F0F5FA] text-[#5F7D9C] px-3 py-1 rounded-full ml-2">BAYU</span>
-                </h2>
-            </div>
-        </div>
-    </x-slot>
+    {{-- Slot header/navbar ganda sudah dihapus --}}
 
     <div class="min-h-screen bg-[#F0F5FA] py-6 sm:py-8" x-data="{ showTagihModal: false }" style="font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
+            {{-- Judul di dalam konten dihapus agar tidak double dengan Navbar --}}
+
             @if(session('success'))
                 <div class="mb-4">
                     <div class="bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 p-3 rounded-r-lg text-sm" role="alert">
@@ -24,8 +16,10 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 
+                {{-- KOLOM KIRI (Statistik & Input) --}}
                 <div class="lg:col-span-5 space-y-6">
                     
+                    {{-- 1. KARTU STATISTIK --}}
                     <div class="grid grid-cols-2 gap-3">
                         <div class="bg-[#1E3A5F] p-4 rounded-xl shadow-sm text-white">
                             <p class="text-[10px] font-medium uppercase text-[#B8D1E5] tracking-wider mb-1">Total Piutang</p>
@@ -45,6 +39,7 @@
                         </div>
                     </div>
 
+                    {{-- GEBRAKAN PKM: TOMBOL NAGIH HARI INI --}}
                     @php
                         $todayDebts = collect($activeDebts)->flatten()->filter(function($debt) {
                             return $debt->jatuh_tempo && \Carbon\Carbon::parse($debt->jatuh_tempo)->isToday();
@@ -64,6 +59,7 @@
                     </button>
                     @endif
 
+                    {{-- 2. FORM INPUT UTANG --}}
                     <div class="bg-white rounded-xl shadow-sm border border-[#D4E0E8] p-5" x-data="{ 
                             nama: '', wa: '', contacts: {{ $contacts->toJson() }},
                             init() {
@@ -113,6 +109,7 @@
                     </div>
                 </div>
 
+                {{-- KOLOM KANAN (Daftar Utang & Riwayat) --}}
                 <div class="lg:col-span-7" x-data="{ activeTab: 'aktif' }">
                     <div class="bg-white rounded-2xl shadow-sm border border-[#D4E0E8] p-6 min-h-[500px]">
                         <div class="flex items-center justify-between mb-6 border-b border-[#D4E0E8]">
@@ -130,6 +127,7 @@
                             </div>
                         </div>
                         
+                        {{-- Tab Utang Aktif --}}
                         <div class="space-y-4" x-show="activeTab === 'aktif'">
                             @forelse($activeDebts as $nama => $items)
                                 <details class="group border border-[#D4E0E8] rounded-xl overflow-hidden shadow-sm">
@@ -176,6 +174,7 @@
                             @endforelse
                         </div>
 
+                        {{-- Tab Riwayat --}}
                         <div class="space-y-4" x-show="activeTab === 'riwayat'" x-cloak>
                             @forelse($historyDebts as $nama => $items)
                                 <details class="group border border-[#D4E0E8] rounded-xl overflow-hidden opacity-80">
@@ -207,6 +206,7 @@
                 </div>
             </div>
 
+            {{-- Modal Nagih --}}
             <div x-show="showTagihModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" x-cloak x-transition>
                 <div class="bg-white w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/20">
                     <div class="bg-orange-500 p-6 text-white flex justify-between items-center shadow-lg">
