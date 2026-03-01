@@ -26,13 +26,21 @@
 
             <div class="max-w-2xl mx-auto mb-6">
                 <div class="overflow-x-auto pb-2 -mx-4 px-4 sm:overflow-visible sm:mx-0 sm:px-0">
-                    <div class="flex sm:grid sm:grid-cols-3 gap-3 min-w-max sm:min-w-full">
-                        <div class="w-48 sm:w-auto bg-[#1E3A5F] p-4 rounded-xl shadow-sm">
+                    <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-3 min-w-max sm:min-w-full">
+                        <div class="w-48 sm:w-auto bg-[#1E3A5F] p-4 rounded-xl shadow-sm text-white">
                             <div class="flex items-center justify-between mb-1">
                                 <p class="text-[10px] font-medium uppercase text-[#B8D1E5] tracking-wider">Total Piutang</p>
                                 <span class="text-lg">💰</span>
                             </div>
-                            <h3 class="text-xl font-bold text-white">Rp {{ number_format($stats['total_piutang'] ?? 0, 0, ',', '.') }}</h3>
+                            <h3 class="text-xl font-bold">Rp {{ number_format($stats['total_piutang'] ?? 0, 0, ',', '.') }}</h3>
+                        </div>
+
+                        <div class="w-48 sm:w-auto bg-emerald-600 p-4 rounded-xl shadow-sm text-white border border-emerald-500">
+                            <div class="flex items-center justify-between mb-1">
+                                <p class="text-[10px] font-medium uppercase text-emerald-100 tracking-wider">Masuk Hari Ini</p>
+                                <span class="text-lg">💵</span>
+                            </div>
+                            <h3 class="text-xl font-bold">Rp {{ number_format($stats['masuk_hari_ini'] ?? 0, 0, ',', '.') }}</h3>
                         </div>
 
                         <div class="w-48 sm:w-auto bg-white p-4 rounded-xl shadow-sm border border-[#D4E0E8]">
@@ -48,7 +56,7 @@
                                 <p class="text-[10px] font-medium uppercase text-[#5F7D9C] tracking-wider">Peminjam Aktif</p>
                                 <span class="text-lg">👥</span>
                             </div>
-                            <h3 class="text-xl font-bold text-[#1E3A5F]">{{ $stats['peminjam_aktif'] ?? 0 }} Orang</h3>
+                            <h3 class="text-xl font-bold text-[#1E3A5F]">{{ $stats['peminjam_aktif'] ?? 0 }} Org</h3>
                         </div>
                     </div>
                 </div>
@@ -117,7 +125,7 @@
 
                             <button type="submit" class="w-full bg-[#1E3A5F] hover:bg-[#0F2A47] text-white py-3 rounded-lg font-medium text-sm transition-all shadow-sm active:scale-[0.98] mt-2">
                                 <span class="flex items-center justify-center gap-2">
-                                    <span>💰</span> Catat Utang Baru
+                                    <span>💰</span> Simpan Catatan
                                 </span>
                             </button>
                         </form>
@@ -174,8 +182,8 @@
                                             @if($wa)
                                                 <a href="https://wa.me/{{ $wa }}?text={{ urlencode('Halo ' . $nama . ', mau ingetin piutang Rp ' . number_format($debt->jumlah_utang, 0, ',', '.') . '. Nuhun!') }}" target="_blank" class="p-2 rounded-lg border border-[#D4E0E8]"><img src="{{ asset('whatsapp.png') }}" class="w-4 h-4"></a>
                                             @endif
-                                            <form action="/update-status/{{ $debt->id }}" method="POST">@csrf <button class="p-2 rounded-lg border border-[#D4E0E8] text-emerald-600"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></button></form>
-                                            <form action="/hapus-utang/{{ $debt->id }}" method="POST" onsubmit="return confirm('Hapus permanen?')">@csrf @method('DELETE') <button class="p-2 rounded-lg border border-[#D4E0E8] text-red-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></form>
+                                            <form action="/update-status/{{ $debt->id }}" method="POST">@csrf <button class="p-2 rounded-lg border border-[#D4E0E8] text-emerald-600 hover:bg-emerald-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></button></form>
+                                            <form action="/hapus-utang/{{ $debt->id }}" method="POST" onsubmit="return confirm('Hapus permanen?')">@csrf @method('DELETE') <button class="p-2 rounded-lg border border-[#D4E0E8] text-red-400 hover:bg-red-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></form>
                                         </div>
                                     </div>
                                 @endforeach
@@ -202,8 +210,11 @@
                                         <div class="flex-1">
                                             <p class="text-xs font-bold text-slate-400 line-through">{{ $debt->keterangan ?: 'Tanpa Keterangan' }}</p>
                                             <p class="text-sm font-black text-slate-400">Rp {{ number_format($debt->jumlah_utang, 0, ',', '.') }}</p>
+                                            <p class="text-[9px] text-emerald-600 font-bold mt-1 uppercase flex items-center gap-1">
+                                                <span>✅</span> Lunas pada: {{ $debt->updated_at->format('d M Y - H:i') }}
+                                            </p>
                                         </div>
-                                        <form action="/update-status/{{ $debt->id }}" method="POST">@csrf <button class="text-[10px] bg-[#1E3A5F] text-white px-3 py-1 rounded-full font-bold uppercase">Batal Lunas</button></form>
+                                        <form action="/update-status/{{ $debt->id }}" method="POST">@csrf <button class="text-[10px] bg-[#1E3A5F] text-white px-3 py-1 rounded-full font-bold uppercase active:scale-95 transition-all">Batal Lunas</button></form>
                                     </div>
                                 @endforeach
                             </div>
@@ -215,19 +226,13 @@
             </div>
 
             <div class="max-w-2xl mx-auto mt-8 text-center">
-                <p class="text-[10px] text-[#5F7D9C]">BAYU • Bayar, Yuk! • Khusus UMKM</p>
+                <p class="text-[10px] text-[#5F7D9C] font-bold tracking-widest uppercase">BAYU • Bayar, Yuk! • Khusus UMKM & Warung</p>
             </div>
         </div>
     </div>
 </x-app-layout>
 
-<!-- Add Poppins font to the layout -->
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-    
-    * {
-        font-family: 'Poppins', sans-serif !important;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+    [x-cloak] { display: none !important; }
 </style>

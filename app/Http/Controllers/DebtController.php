@@ -4,22 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\Debt;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class DebtController extends Controller
 {
     public function index()
     {
         $user = auth()->user();
-        $allDebts = $user->debts()->latest()->get();
+        $allDebts = $user->debts()->latest('updated_at')->get();
         
         // Pisahkan data untuk Tab
         $activeDebts = $allDebts->where('status', 'belum_lunas')->groupBy('nama_peminjam');
         $historyDebts = $allDebts->where('status', 'lunas')->groupBy('nama_peminjam');
 
+        // Statistik
         $stats = [
             'total_piutang'  => $allDebts->where('status', 'belum_lunas')->sum('jumlah_utang'),
             'total_kembali'  => $allDebts->where('status', 'lunas')->sum('jumlah_utang'),
             'peminjam_aktif' => $activeDebts->count(),
+            // Gebrakan PKM: Cek berapa duit yang masuk khusus hari ini
+            'masuk_hari_ini' => $allDebts->where('status', 'lunas')
+                                         ->where('updated_at', '>=', Carbon::today())
+                                         ->sum('jumlah_utang'),
         ];
 
         $contacts = $allDebts->whereNotNull('nomor_wa')
@@ -65,14 +71,16 @@ class DebtController extends Controller
     {
         $debt = auth()->user()->debts()->findOrFail($id);
         $debt->status = ($debt->status == 'lunas') ? 'belum_lunas' : 'lunas';
+        // Saat save, updated_at akan otomatis terisi waktu sekarang (tanggal lunas)
         $debt->save();
-        return back()->with('success', 'Status diperbarui!');
+
+        return back()->with('success', 'Status berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
         $debt = auth()->user()->debts()->findOrFail($id);
         $debt->delete();
-        return back()->with('success', 'Berhasil dihapus!');
+        return back()->with('success', 'Catatan berhasil dihapus!');
     }
 }
