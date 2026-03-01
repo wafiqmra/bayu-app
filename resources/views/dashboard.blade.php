@@ -1,5 +1,4 @@
 <x-app-layout>
-    <!-- Custom Header dengan style BAYU -->
     <x-slot name="header">
         <div class="bg-white/95 backdrop-blur-sm border-b border-[#D4E0E8]">
             <div class="w-full px-4 sm:px-6 lg:px-8 py-4">
@@ -15,7 +14,6 @@
     <div class="min-h-screen bg-[#F0F5FA] py-6 sm:py-8">
         <div class="w-full px-4 sm:px-6 lg:px-8">
             
-            <!-- Alert Success -->
             @if(session('success'))
                 <div class="max-w-2xl mx-auto mb-4">
                     <div class="bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 p-3 rounded-r-lg text-sm" role="alert">
@@ -26,12 +24,9 @@
                 </div>
             @endif
 
-            <!-- Stats Cards - HORIZONTAL SCROLL di mobile, grid biasa di desktop -->
             <div class="max-w-2xl mx-auto mb-6">
-                <!-- Mobile: horizontal scroll -->
                 <div class="block sm:hidden overflow-x-auto pb-2 -mx-4 px-4">
                     <div class="flex gap-3 min-w-max">
-                        <!-- Total Piutang -->
                         <div class="w-48 bg-[#1E3A5F] p-4 rounded-xl shadow-sm flex-shrink-0">
                             <div class="flex items-center justify-between mb-1">
                                 <p class="text-[10px] font-medium uppercase text-[#B8D1E5] tracking-wider">Total Piutang</p>
@@ -40,7 +35,6 @@
                             <h3 class="text-xl font-bold text-white">Rp {{ number_format($stats['total_piutang'] ?? 0, 0, ',', '.') }}</h3>
                         </div>
 
-                        <!-- Sudah Kembali -->
                         <div class="w-48 bg-white p-4 rounded-xl shadow-sm border border-[#D4E0E8] flex-shrink-0">
                             <div class="flex items-center justify-between mb-1">
                                 <p class="text-[10px] font-medium uppercase text-[#5F7D9C] tracking-wider">Sudah Kembali</p>
@@ -49,7 +43,6 @@
                             <h3 class="text-xl font-bold text-[#1E3A5F]">Rp {{ number_format($stats['total_kembali'] ?? 0, 0, ',', '.') }}</h3>
                         </div>
 
-                        <!-- Peminjam Aktif -->
                         <div class="w-48 bg-white p-4 rounded-xl shadow-sm border border-[#D4E0E8] flex-shrink-0">
                             <div class="flex items-center justify-between mb-1">
                                 <p class="text-[10px] font-medium uppercase text-[#5F7D9C] tracking-wider">Peminjam Aktif</p>
@@ -58,19 +51,9 @@
                             <h3 class="text-xl font-bold text-[#1E3A5F]">{{ $stats['peminjam_aktif'] ?? 0 }} Orang</h3>
                         </div>
                     </div>
-                    <!-- Hint scroll -->
-                    <div class="flex justify-center mt-1">
-                        <div class="flex gap-1">
-                            <span class="w-1 h-1 bg-[#1E3A5F]/30 rounded-full"></span>
-                            <span class="w-1 h-1 bg-[#1E3A5F]/30 rounded-full"></span>
-                            <span class="w-1 h-1 bg-[#1E3A5F]/30 rounded-full"></span>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Desktop: grid biasa -->
                 <div class="hidden sm:grid sm:grid-cols-3 gap-3">
-                    <!-- Total Piutang -->
                     <div class="bg-[#1E3A5F] p-4 rounded-xl shadow-sm">
                         <div class="flex items-center justify-between mb-1">
                             <p class="text-[10px] font-medium uppercase text-[#B8D1E5] tracking-wider">Total Piutang</p>
@@ -79,7 +62,6 @@
                         <h3 class="text-xl font-bold text-white">Rp {{ number_format($stats['total_piutang'] ?? 0, 0, ',', '.') }}</h3>
                     </div>
 
-                    <!-- Sudah Kembali -->
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-[#D4E0E8]">
                         <div class="flex items-center justify-between mb-1">
                             <p class="text-[10px] font-medium uppercase text-[#5F7D9C] tracking-wider">Sudah Kembali</p>
@@ -88,7 +70,6 @@
                         <h3 class="text-xl font-bold text-[#1E3A5F]">Rp {{ number_format($stats['total_kembali'] ?? 0, 0, ',', '.') }}</h3>
                     </div>
 
-                    <!-- Peminjam Aktif -->
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-[#D4E0E8]">
                         <div class="flex items-center justify-between mb-1">
                             <p class="text-[10px] font-medium uppercase text-[#5F7D9C] tracking-wider">Peminjam Aktif</p>
@@ -99,7 +80,6 @@
                 </div>
             </div>
 
-            <!-- Form Tambah Utang -->
             <div class="max-w-2xl mx-auto mb-6">
                 <div class="bg-white rounded-xl shadow-sm border border-[#D4E0E8] overflow-hidden">
                     <div class="p-5"
@@ -125,7 +105,6 @@
 
                         <form action="/tambah-utang" method="POST" class="space-y-3">
                             @csrf
-                            <!-- Nama & WA -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
                                     <label class="block text-[10px] font-medium text-[#5F7D9C] mb-1">Nama Peminjam</label>
@@ -144,7 +123,6 @@
                                 </div>
                             </div>
 
-                            <!-- Jumlah & Jatuh Tempo -->
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
                                     <label class="block text-[10px] font-medium text-[#5F7D9C] mb-1">Jumlah (Rp)</label>
@@ -159,7 +137,6 @@
                                 </div>
                             </div>
 
-                            <!-- Keterangan -->
                             <div>
                                 <label class="block text-[10px] font-medium text-[#5F7D9C] mb-1">Keterangan</label>
                                 <input type="text" name="keterangan"
@@ -167,7 +144,6 @@
                                     placeholder="Buat apa? (opsional)">
                             </div>
 
-                            <!-- Submit -->
                             <button type="submit" 
                                 class="w-full bg-[#1E3A5F] hover:bg-[#0F2A47] text-white text-center py-3 rounded-lg font-medium text-sm transition-all shadow-sm active:scale-[0.98] mt-2">
                                 <span class="flex items-center justify-center gap-2">
@@ -179,7 +155,6 @@
                 </div>
             </div>
 
-            <!-- Daftar Peminjam -->
             <div class="max-w-2xl mx-auto">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-sm font-bold text-[#1E3A5F] flex items-center gap-2">
@@ -223,13 +198,12 @@
                                     @php
                                         $isOverdue = $debt->jatuh_tempo && \Carbon\Carbon::parse($debt->jatuh_tempo)->isPast() && $debt->status != 'lunas';
                                         $pesan = $isOverdue 
-                                            ? "Halo {$nama}, mau ngingetin utang Rp " . number_format($debt->jumlah_utang, 0, ',', '.') . " untuk '{$debt->keterangan}' sudah LEWAT JATUH TEMPO pada " . \Carbon\Carbon::parse($debt->jatuh_tempo)->format('d/m/Y') . ". Mohon segera dibayar ya! 🙏"
+                                            ? "Halo {$nama}, mau ngingetin utang Rp " . number_format($debt->jumlah_utang, 0, ',', '.') . " untuk '{$debt->keterangan}' sudah LEWAT JATUH TEMPO pada " . \Carbon\Carbon::parse($debt->jatuh_tempo)->translatedFormat('d F Y') . ". Mohon segera dibayar ya! 🙏"
                                             : "Halo {$nama}, mau ngingetin catatan piutang di BAYU sebesar Rp " . number_format($debt->jumlah_utang, 0, ',', '.') . " untuk '{$debt->keterangan}'. Mohon dicek ya, nuhun! 🙏";
                                         $linkWA = $waFormatted ? "https://wa.me/{$waFormatted}?text=" . urlencode($pesan) : null;
                                     @endphp
 
                                     <div class="bg-white p-3 rounded-lg border {{ $isOverdue ? 'border-red-200 bg-red-50/50' : 'border-[#D4E0E8]' }} flex items-center justify-between gap-2">
-                                        <!-- Info Utang -->
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center gap-2 mb-0.5">
                                                 <p class="text-xs font-medium {{ $debt->status == 'lunas' ? 'line-through text-[#5F7D9C]' : 'text-[#1E3A5F]' }} truncate">
@@ -239,45 +213,40 @@
                                                     <span class="text-[8px] bg-red-500 text-white px-1.5 py-0.5 rounded-full shrink-0">Telat</span>
                                                 @endif
                                             </div>
-
                                             <p class="text-sm font-bold text-[#1E3A5F]">Rp {{ number_format($debt->jumlah_utang, 0, ',', '.') }}</p>
-                                            
-                                            <div class="flex flex-wrap gap-x-2 gap-y-0.5 mt-0.5">
-                                                <p class="text-[8px] text-[#5F7D9C]">📅 {{ $debt->created_at->format('d/m') }}</p>
+                                            <div class="flex flex-col gap-0.5 mt-1">
+                                                <p class="text-[9px] text-[#5F7D9C] flex items-center gap-1">
+                                                    <span>📅</span> Dicatat: {{ \Carbon\Carbon::parse($debt->created_at)->translatedFormat('d F Y') }}
+                                                </p>
                                                 @if($debt->jatuh_tempo)
-                                                    <p class="text-[8px] {{ $isOverdue ? 'text-red-500' : 'text-[#5F7D9C]' }}">
-                                                        ⏳ {{ \Carbon\Carbon::parse($debt->jatuh_tempo)->format('d/m') }}
+                                                    <p class="text-[9px] {{ $isOverdue ? 'text-red-500 font-medium' : 'text-[#5F7D9C]' }} flex items-center gap-1">
+                                                        <span>⏳</span> Janji: {{ \Carbon\Carbon::parse($debt->jatuh_tempo)->translatedFormat('d F Y') }}
                                                     </p>
                                                 @endif
                                             </div>
                                         </div>
                                         
-                                        <!-- Actions -->
-                                        <div class="flex gap-1 shrink-0">
+                                        <div class="flex gap-2 shrink-0 items-center">
                                             @if($debt->nomor_wa && $debt->status != 'lunas' && $linkWA)
                                                 <a href="{{ $linkWA }}" target="_blank" 
-                                                   class="p-1.5 rounded-lg border {{ $isOverdue ? 'border-red-200 bg-red-50 text-red-600' : 'border-[#D4E0E8] bg-white text-[#1E3A5F] hover:bg-[#1E3A5F] hover:text-white' }} transition-all">
-                                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                                                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652z"/>
-                                                    </svg>
+                                                   class="p-2 rounded-lg border border-[#D4E0E8] bg-white hover:bg-emerald-50 transition-all flex items-center justify-center">
+                                                    <img src="{{ asset('whatsapp.png') }}" alt="WA" class="w-5 h-5 object-contain">
                                                 </a>
                                             @endif
                                             
-                                            <!-- Tombol Lunas -->
                                             <form action="/update-status/{{ $debt->id }}" method="POST">
                                                 @csrf
-                                                <button class="p-1.5 rounded-lg border {{ $debt->status == 'lunas' ? 'bg-[#1E3A5F] text-white border-[#1E3A5F]' : 'border-[#D4E0E8] bg-white text-[#1E3A5F] hover:bg-[#1E3A5F] hover:text-white' }} transition-all">
-                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <button class="p-2 rounded-lg border {{ $debt->status == 'lunas' ? 'bg-[#1E3A5F] text-white border-[#1E3A5F]' : 'border-[#D4E0E8] bg-white text-[#1E3A5F] hover:bg-[#1E3A5F] hover:text-white' }} transition-all flex items-center justify-center">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                                                     </svg>
                                                 </button>
                                             </form>
                                             
-                                            <!-- Tombol Hapus -->
                                             <form action="/hapus-utang/{{ $debt->id }}" method="POST" onsubmit="return confirm('Yakin hapus?')">
                                                 @csrf @method('DELETE')
-                                                <button class="p-1.5 rounded-lg border border-red-200 bg-red-50 text-red-400 hover:bg-red-100 hover:text-red-600 transition-all">
-                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <button class="p-2 rounded-lg border border-red-100 bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600 transition-all flex items-center justify-center">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                     </svg>
                                                 </button>
@@ -296,7 +265,6 @@
                 </div>
             </div>
 
-            <!-- Footer -->
             <div class="max-w-2xl mx-auto mt-8 text-center">
                 <p class="text-[10px] text-[#5F7D9C]">
                     BAYU • Bayar, Yuk! • khusus pemilik warung & umkm
