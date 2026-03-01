@@ -83,4 +83,12 @@ class DebtController extends Controller
         $debt->delete();
         return back()->with('success', 'Catatan berhasil dihapus!');
     }
+
+    public function showInvoice($id)
+    {
+        // Cari utang berdasarkan ID, kalau gak ada muncul 404
+        $debt = Debt::findOrFail($id);
+        
+        return view('invoice', compact('debt'));
+    }
 }

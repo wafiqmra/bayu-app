@@ -171,16 +171,28 @@
                                         $isOverdue = $debt->jatuh_tempo && \Carbon\Carbon::parse($debt->jatuh_tempo)->isPast() && $debt->status != 'lunas';
                                         $wa = $debt->nomor_wa;
                                         if ($wa && str_starts_with($wa, '0')) { $wa = '62' . substr($wa, 1); }
+
+                                        // Persiapan Data Pesan WA Dinamis (Gebrakan PKM)
+                                        $barang = $debt->keterangan ?: 'belanjaan';
+                                        $nominal = number_format($debt->jumlah_utang, 0, ',', '.');
+                                        $tglNgutang = $debt->created_at->translatedFormat('d F Y');
+                                        $linkInvoice = route('debt.invoice', $debt->id);
+
+                                        if($isOverdue) {
+                                            $pesanWA = "PUNTEN 🙏 Mau ngingetin utang $barang (Catatan Tgl $tglNgutang) sebesar Rp $nominal SUDAH LEWAT JATUH TEMPO. Mohon segera dilunasi ya. Cek rincian & QRIS di sini: $linkInvoice";
+                                        } else {
+                                            $pesanWA = "Halo $nama 😊 Sekadar mengingatkan, ada catatan piutang $barang (Catatan Tgl $tglNgutang) sebesar Rp $nominal ya. Rincian dan QRIS bisa dicek di sini: $linkInvoice. Nuhun 🙏";
+                                        }
                                     @endphp
                                     <div class="bg-white p-3 rounded-lg border {{ $isOverdue ? 'border-red-200 bg-red-50/50' : 'border-[#D4E0E8]' }} flex items-center justify-between">
                                         <div class="flex-1">
-                                            <p class="text-xs font-bold text-[#1E3A5F]">{{ $debt->keterangan ?: 'Tanpa Keterangan' }} @if($isOverdue) <span class="text-[8px] bg-red-500 text-white px-1.5 py-0.5 rounded-full ml-1">Telat!</span> @endif</p>
+                                            <p class="text-xs font-bold text-[#1E3A5F]">{{ $debt->keterangan ?: 'Tanpa Keterangan' }} @if($isOverdue) <span class="text-[8px] bg-red-500 text-white px-1.5 py-0.5 rounded-full ml-1 uppercase">Telat!</span> @endif</p>
                                             <p class="text-sm font-black text-blue-600">Rp {{ number_format($debt->jumlah_utang, 0, ',', '.') }}</p>
-                                            <p class="text-[9px] text-slate-400 mt-1">📅 {{ $debt->created_at->format('d M Y') }} @if($debt->jatuh_tempo) | ⏳ {{ \Carbon\Carbon::parse($debt->jatuh_tempo)->format('d M Y') }} @endif</p>
+                                            <p class="text-[9px] text-slate-400 mt-1 uppercase">📅 {{ $debt->created_at->format('d M Y') }} @if($debt->jatuh_tempo) | ⏳ {{ \Carbon\Carbon::parse($debt->jatuh_tempo)->format('d M Y') }} @endif</p>
                                         </div>
                                         <div class="flex gap-2">
                                             @if($wa)
-                                                <a href="https://wa.me/{{ $wa }}?text={{ urlencode('Halo ' . $nama . ', mau ingetin piutang Rp ' . number_format($debt->jumlah_utang, 0, ',', '.') . '. Nuhun!') }}" target="_blank" class="p-2 rounded-lg border border-[#D4E0E8]"><img src="{{ asset('whatsapp.png') }}" class="w-4 h-4"></a>
+                                                <a href="https://wa.me/{{ $wa }}?text={{ urlencode($pesanWA) }}" target="_blank" class="p-2 rounded-lg border border-[#D4E0E8] hover:bg-emerald-50"><img src="{{ asset('whatsapp.png') }}" class="w-4 h-4"></a>
                                             @endif
                                             <form action="/update-status/{{ $debt->id }}" method="POST">@csrf <button class="p-2 rounded-lg border border-[#D4E0E8] text-emerald-600 hover:bg-emerald-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></button></form>
                                             <form action="/hapus-utang/{{ $debt->id }}" method="POST" onsubmit="return confirm('Hapus permanen?')">@csrf @method('DELETE') <button class="p-2 rounded-lg border border-[#D4E0E8] text-red-400 hover:bg-red-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></form>
@@ -211,7 +223,7 @@
                                             <p class="text-xs font-bold text-slate-400 line-through">{{ $debt->keterangan ?: 'Tanpa Keterangan' }}</p>
                                             <p class="text-sm font-black text-slate-400">Rp {{ number_format($debt->jumlah_utang, 0, ',', '.') }}</p>
                                             <p class="text-[9px] text-emerald-600 font-bold mt-1 uppercase flex items-center gap-1">
-                                                <span>✅</span> Lunas pada: {{ $debt->updated_at->format('d M Y - H:i') }}
+                                                <span>✅</span> Lunas pada: {{ $debt->updated_at->timezone('Asia/Jakarta')->translatedFormat('d F Y | H:i') }} WIB
                                             </p>
                                         </div>
                                         <form action="/update-status/{{ $debt->id }}" method="POST">@csrf <button class="text-[10px] bg-[#1E3A5F] text-white px-3 py-1 rounded-full font-bold uppercase active:scale-95 transition-all">Batal Lunas</button></form>

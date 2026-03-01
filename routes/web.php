@@ -24,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tambah-utang', [DebtController::class, 'store']);
     Route::post('/update-status/{id}', [DebtController::class, 'updateStatus']);
     Route::delete('/hapus-utang/{id}', [DebtController::class, 'destroy']);
+    Route::get('/bayar/{id}', [DebtController::class, 'showInvoice'])->name('debt.invoice');
 
     // Fitur Profile (Bawaan Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
