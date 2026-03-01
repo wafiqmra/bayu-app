@@ -11,7 +11,7 @@
         </div>
     </x-slot>
 
-    <div class="min-h-screen bg-[#F0F5FA] py-6 sm:py-8">
+    <div class="min-h-screen bg-[#F0F5FA] py-6 sm:py-8" style="font-family: 'Poppins', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;">
         <div class="w-full px-4 sm:px-6 lg:px-8">
             
             @if(session('success'))
@@ -220,3 +220,14 @@
         </div>
     </div>
 </x-app-layout>
+
+<!-- Add Poppins font to the layout -->
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+    
+    * {
+        font-family: 'Poppins', sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+</style>
